@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(cmaketuts VERSION 0.1.0)
 
+configure_file(cmaketutsConfig.h.in cmaketutsConfig.h)
 add_executable(${PROJECT_NAME} main.cpp)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
 add_subdirectory(Adder)
 
 add_subdirectory(external/glfw)
