@@ -1,27 +1,26 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(cmaketuts VERSION 0.1.0)
 
-configure_file(cmaketutsConfig.h.in cmaketutsConfig.h)
+#======= adder use logic =======
+option(USE_ADDER "A simple library for adding 2 floats." ON)
+
+if(USE_ADDER)
+    add_subdirectory(Adder)
+    list(APPEND EXTRA_LIB_DIRS "Adder")
+    list(APPEND EXTRA_INCLUDES_DIRS "${PROJECT_SOURCE_DIR}/Adder")
+    list(APPEND EXTRA_LINKS adder)
+
+endif(USE_ADDER)
+#======= adder use logic =======
+
 add_executable(${PROJECT_NAME} main.cpp)
+
+configure_file(cmaketutsConfig.h.in cmaketutsConfig.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_subdirectory(Adder)
 
-add_subdirectory(external/glfw)
-
-target_include_directories(${PROJECT_NAME} 
-    PUBLIC Adder
-    PUBLIC  external/glfw/include
-)
-
-target_link_directories(${PROJECT_NAME} 
-    PRIVATE Adder
-    PRIVATE external/glfw/src
-)
-
-target_link_libraries(${PROJECT_NAME} adder glfw)
-
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR})
 #=========================================
 # DOWNLOAD ALL THE SUBMODULES
 find_package(Git QUIET)
@@ -43,6 +42,19 @@ endif()
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/glfw/CMakeLists.txt")
     message(FATAL_ERROR "The glfw submodules was not downloaded! GIT_SUBMODULE was turned off or failed.")
 endif()
+
+add_subdirectory(external/glfw)
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC external/glfw/include
+    ${EXTRA_INCLUDES}
+)
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC external/glfw/include
+    ${EXTRA_LIB_DIRS}
+)
+target_link_libraries(${PROJECT_NAME} ${EXTRA_LINKS} glfw)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

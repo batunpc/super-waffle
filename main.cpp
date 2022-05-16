@@ -1,13 +1,19 @@
 
 #include <GLFW/glfw3.h>
-#include <adder.h>
 #include <cmaketutsConfig.h>
 
 #include <iostream>
-
+#ifdef USE_ADDER
+#include <adder.h>
+#endif
 int main(int argc, char* argv[]) {
     std::cout << "Hello World\n";
-    std::cout << add(72.1f, 73.8f) << std::endl;
+
+#ifdef USE_ADDER
+    std::cout << "=> Using Adder lib: " << add(72.1f, 73.8f) << std::endl;
+#else
+    std::cout << "=> NOT Using Adder lib: " << 72.1f + 73.8f << std::endl;
+#endif
 
     std::cout << argv[0] << " Version " << CMAKETUTS_VERSION_MAJOR << "."
               << CMAKETUTS_VERSION_MINOR << "\n";

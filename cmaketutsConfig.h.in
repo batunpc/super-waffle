@@ -1,2 +1,4 @@
 #define CMAKETUTS_VERSION_MAJOR 1
 #define CMAKETUTS_VERSION_MINOR 1
+
+#cmakedefine USE_ADDER

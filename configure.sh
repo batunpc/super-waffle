@@ -1,3 +1,4 @@
 #! /bin/sh
 
-cmake -DGLFW_BUILD_DOCS=OFF -S . -B out/build # docs disabled to make the build time faster
+# docs disabled to make the build time faster
+cmake -DGLFW_BUILD_DOCS=OFF -DUSE_ADDER=ON -S . -B out/build 
